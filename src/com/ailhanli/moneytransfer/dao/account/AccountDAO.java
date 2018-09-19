@@ -1,6 +1,5 @@
 package com.ailhanli.moneytransfer.dao.account;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
@@ -12,5 +11,5 @@ public interface AccountDAO {
 	
 	Account findById(Integer id)throws RecordNotFoundException;
 	
-	Account update(Integer accountId, BigDecimal balanceToTransfer);
+	void update(Account account);	
 }

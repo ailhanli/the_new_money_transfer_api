@@ -11,7 +11,7 @@ public interface TransferLogService {
 
 	List<Transfer> getAllTransfer()throws GeneralSystemException;
 
-	Transfer getTransfer(String transferId) throws TransferNotFoundException, InputInvalidException, GeneralSystemException;
+	Transfer getTransfer(Integer transferId) throws TransferNotFoundException, InputInvalidException, GeneralSystemException;
 
 	Integer newTransferLog(Transfer transfer) throws GeneralSystemException;
 }

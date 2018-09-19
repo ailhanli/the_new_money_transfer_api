@@ -24,13 +24,15 @@ public class AccountControllerImpl implements AccountController {
 	private final AccountService accountService;
 
 	public AccountControllerImpl(AccountService accountService) {
-		super();
 		this.accountService = accountService;
 	}
 
 	public void getAccount(RoutingContext routingContext) {
-		final String accountId = routingContext.request().getParam("accountId");
+		final String accountIdAsString = routingContext.request().getParam("accountId");
+
 		try {
+			final Integer accountId = Integer.valueOf(accountIdAsString);
+			
 			Account account = accountService.getAccount(accountId);
 			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").end(Json.encodePrettily(account));
 		} catch (AccountNotFoundException | InputInvalidException e) {

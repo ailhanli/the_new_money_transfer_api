@@ -16,12 +16,12 @@ public class TransferLogDAOImpl implements TransferLogDAO {
 
 	private final Map<Integer, Transfer> transferDB = new LinkedHashMap<>();
 	
-	private TransferLogDAOImpl() {
-		Transfer tr1 = new Transfer("1", "2", new BigDecimal("650"), "EUR", "Rent");
+	public TransferLogDAOImpl() {
+		Transfer tr1 = new Transfer(1, 2, new BigDecimal("650"), "EUR", "Rent");
 		transferDB.put(tr1.getTransferId(), tr1);
-		Transfer tr2 = new Transfer("0", "2", new BigDecimal("200"), "EUR", "Happy birthday");
+		Transfer tr2 = new Transfer(0, 2, new BigDecimal("200"), "EUR", "Happy birthday");
 		transferDB.put(tr2.getTransferId(), tr2);
-		Transfer tr3 = new Transfer("1", "0", new BigDecimal("100"), "EUR", "Groceries");
+		Transfer tr3 = new Transfer(1, 0, new BigDecimal("100"), "EUR", "Groceries");
 		transferDB.put(tr2.getTransferId(), tr3);
 	}
 

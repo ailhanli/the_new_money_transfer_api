@@ -9,9 +9,9 @@ public class Transfer {
 
 	private final Integer transferId;
 
-	private String sourceAccountId;
+	private Integer sourceAccountId;
 
-	private String destinationAccountId;
+	private Integer destinationAccountId;
 
 	private BigDecimal amount;
 
@@ -21,7 +21,7 @@ public class Transfer {
 
 	private TransferStatus status;
 
-	public Transfer(String sourceAccountId, String destinationAccountId, BigDecimal amount, String currencyCode,
+	public Transfer(Integer sourceAccountId, Integer destinationAccountId, BigDecimal amount, String currencyCode,
 			String comment) {
 		this.transferId = COUNTER.getAndIncrement();
 		this.sourceAccountId = sourceAccountId;
@@ -41,19 +41,19 @@ public class Transfer {
 		return transferId;
 	}
 
-	public String getSourceAccountId() {
+	public Integer getSourceAccountId() {
 		return sourceAccountId;
 	}
 
-	public void setSourceAccountId(String sourceAccountId) {
+	public void setSourceAccountId(Integer sourceAccountId) {
 		this.sourceAccountId = sourceAccountId;
 	}
 
-	public String getDestinationAccountId() {
+	public Integer getDestinationAccountId() {
 		return destinationAccountId;
 	}
 
-	public void setDestinationAccountId(String destinationAccountId) {
+	public void setDestinationAccountId(Integer destinationAccountId) {
 		this.destinationAccountId = destinationAccountId;
 	}
 

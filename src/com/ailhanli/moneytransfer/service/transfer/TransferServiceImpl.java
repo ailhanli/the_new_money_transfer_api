@@ -14,74 +14,58 @@ import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
 import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
 import com.ailhanli.moneytransfer.service.exception.InsufficientBalanceException;
 import com.ailhanli.moneytransfer.service.transferlog.TransferLogService;
+import com.ailhanli.moneytransfer.validator.TransferValidator;
 
 @Service
 @Transactional
 public class TransferServiceImpl implements TransferService {
-	
+
 	private static Logger log = Logger.getLogger(TransferServiceImpl.class);
 
 	private final TransferLogService transferLogService;
-	
 	private final AccountService accountService;
+	private final TransferValidator transferValidator;
 
-	public TransferServiceImpl(TransferLogService transferLogService, AccountService accountService) {
+	public TransferServiceImpl(TransferLogService transferLogService, AccountService accountService,
+			TransferValidator transferValidator) {
 		super();
 		this.transferLogService = transferLogService;
 		this.accountService = accountService;
+		this.transferValidator = transferValidator;
 	}
 
 	/**
-	 * transferMoney methods transfers money from one account to another It firstly
-	 * validates input and then validates account id if exist in DB After that
-	 * atomic transfer logic starts. It firstly check balance from source account
-	 * and then transfer money from one account to another During this atomic logic
-	 * no other thread can enter this block until it finishes
+	 * transferMoney methods transfers money from one account to another It
+	 * firstly validates input and then validates account id if exist in DB
+	 * After that atomic transfer logic starts. It firstly check balance from
+	 * source account and then transfer money from one account to another During
+	 * this atomic logic no other thread can enter this block until it finishes
 	 * 
 	 */
 	@Override
 	public void transferMoney(Transfer transfer) throws AccountNotFoundException, InsufficientBalanceException,
 			InputInvalidException, GeneralSystemException {
-		// input validation
-		TransferInputValidator inputValidator = new TransferInputValidator();
-		inputValidator.validateTransferInput(transfer);
+		
+		transferValidator.validateTransferInput(transfer);		
 
-		String sourceAccountId = transfer.getSourceAccountId();
-		String destinationAccountId = transfer.getDestinationAccountId();
-		Integer sourceAccountIdAsInteger = Integer.valueOf(sourceAccountId);
-		Integer destinationAccountIdAsInteger = Integer.valueOf(destinationAccountId);
-
-		// id validation from db
-		Account sourceAccount = null, destinationAccount = null;
-		try {
-			sourceAccount = accountService.getAccount(sourceAccountId);
-			destinationAccount = accountService.getAccount(destinationAccountId);
-		} catch (AccountNotFoundException | InputInvalidException e) {
-			log.warn(e);
-			throw e;
-		}catch (Exception e) {
-			log.error(e);
-			throw new GeneralSystemException();
-		}
-
-		// transfer money process
-		BigDecimal balanceToTransfer = transfer.getAmount();
+		Integer sourceAccountId = transfer.getSourceAccountId();
+		Integer destinationAccountId = transfer.getDestinationAccountId();
+		
+		Account sourceAccount = accountService.getAccount(sourceAccountId);
+		Account destinationAccount = accountService.getAccount(destinationAccountId);
+		
+		BigDecimal amountToTransfer = transfer.getAmount();
 		synchronized (this) {
 			try {
+				//validate if it is valid amount to transfer
+				transferValidator.validateTransferAmount(sourceAccount, amountToTransfer);
 
-				BigDecimal balanceAfterTransfer = sourceAccount.getBalance().subtract(balanceToTransfer);
-				if (balanceAfterTransfer.compareTo(BigDecimal.ZERO) == -1) {
-					throw new InsufficientBalanceException(sourceAccount.getBalance());
-				}
-
-				// withdraw from source a // withdraw from source account and then deposit to
-				// destination accountccount and then deposit to destination account
+				//update balance for each account
 				sourceAccount.withdraw(transfer.getAmount());
 				destinationAccount.deposit(transfer.getAmount());
 
-				// update accounts balance
-				accountService.updateBalance(sourceAccountIdAsInteger, sourceAccount.getBalance());
-				accountService.updateBalance(destinationAccountIdAsInteger, destinationAccount.getBalance());
+				accountService.updateAccount(sourceAccount);
+				accountService.updateAccount(destinationAccount);
 
 				// keep transfer log
 				transferLogService.newTransferLog(transfer);

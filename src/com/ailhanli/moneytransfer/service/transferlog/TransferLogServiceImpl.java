@@ -9,9 +9,7 @@ import com.ailhanli.moneytransfer.dao.transferlog.TransferLogDAO;
 import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.model.Transfer;
 import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
-import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
 import com.ailhanli.moneytransfer.service.exception.TransferNotFoundException;
-import com.ailhanli.moneytransfer.service.transfer.TransferIdValidator;
 
 @Service
 public class TransferLogServiceImpl implements TransferLogService {
@@ -36,13 +34,10 @@ public class TransferLogServiceImpl implements TransferLogService {
 	}
 
 	@Override
-	public Transfer getTransfer(String transferId)
-			throws TransferNotFoundException, InputInvalidException, GeneralSystemException {
-		TransferIdValidator idValidator = new TransferIdValidator();
-		idValidator.validateAccountNumber(transferId);
+	public Transfer getTransfer(Integer transferId)
+			throws TransferNotFoundException, GeneralSystemException {
 
 		Integer transferIdAsInt = Integer.valueOf(transferId);
-
 		try {
 			return logDAO.findById(transferIdAsInt);
 		} catch (RecordNotFoundException e) {

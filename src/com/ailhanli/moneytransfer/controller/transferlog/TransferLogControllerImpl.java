@@ -25,7 +25,6 @@ public class TransferLogControllerImpl implements TransferLogController {
 	private final TransferLogService transferLogService;
 
 	public TransferLogControllerImpl( TransferLogService transferLogService) {
-		super();
 		this.transferLogService = transferLogService;
 	}
 
@@ -43,9 +42,10 @@ public class TransferLogControllerImpl implements TransferLogController {
 
 	@Override
 	public void getTransfer(RoutingContext routingContext) {
-		final String transferId = routingContext.request().getParam("transferId");
-
+		final String transferIdAsStr = routingContext.request().getParam("transferId");
+		
 		try {
+			final Integer transferId= Integer.valueOf(transferIdAsStr);
 			Transfer transfer = transferLogService.getTransfer(transferId);
 			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").end(Json.encodePrettily(transfer));
 		} catch (TransferNotFoundException | InputInvalidException e) {

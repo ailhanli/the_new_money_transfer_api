@@ -1,18 +1,22 @@
 package com.ailhanli.moneytransfer;
 
-import io.vertx.core.Vertx;
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.annotation.PostConstruct;
+import io.vertx.core.Vertx;
 
+/*
+ * This is a entry point of application
+ * */
 @SpringBootApplication
 public class VertxApplication {
 
 	@Autowired
 	private VertxServerVerticle vertxServerVerticle;
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(VertxApplication.class);
 	}

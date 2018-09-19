@@ -17,7 +17,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	private final Map<Integer, Account> accountDB = new LinkedHashMap<>();
 	
-	private AccountDAOImpl() {
+	public AccountDAOImpl() {
 		Account acc1 = new Account("Yana Karkov", new BigDecimal(1500), Currency.getInstance("EUR"));
 		accountDB.put(acc1.getAccountId(), acc1);
 		Account acc2 = new Account("Ina Karkov", new BigDecimal(300), Currency.getInstance("EUR"));
@@ -37,10 +37,8 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public Account update(Integer accountId, BigDecimal newBalance) {
-		Account account = accountDB.get(accountId);
-		account.setBalance(newBalance);
-		return account;
+	public void update(Account account){
+		accountDB.put(account.getAccountId(), account);
 	}
 
 	@Override

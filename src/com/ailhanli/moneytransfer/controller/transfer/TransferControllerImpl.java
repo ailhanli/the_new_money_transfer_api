@@ -31,13 +31,11 @@ public class TransferControllerImpl implements TransferController {
 
 	@Override
 	public void newTransfer(RoutingContext routingContext) {
-		log.debug("TransferControllerImpl newTransfer is started");
 		try {
 			final Transfer transfer = Json.decodeValue(routingContext.getBodyAsString(), Transfer.class);
 			log.debug(transfer);
 
 			transferService.transferMoney(transfer);
-			log.debug("The transfer is successfully done!");
 
 			routingContext.response().setStatusCode(200).putHeader("content-type", "application/json; charset=utf-8")
 					.end(Json.encodePrettily(transfer));

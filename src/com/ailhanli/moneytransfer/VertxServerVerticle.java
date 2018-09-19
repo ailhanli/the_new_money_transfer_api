@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.ailhanli.moneytransfer.controller.account.AccountController;
 import com.ailhanli.moneytransfer.controller.transfer.TransferController;
 import com.ailhanli.moneytransfer.controller.transferlog.TransferLogController;
+import com.ailhanli.moneytransfer.properties.Config;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -13,11 +14,14 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 
+/*
+ * This is a entry point of vertx. all routing is done simply in this class
+ * */
 @Component
 public class VertxServerVerticle extends AbstractVerticle {
 
     @Autowired
-    private ApplicationConfiguration applicationConfiguration;
+    private Config applicationConfiguration;
     
     @Autowired
     private  TransferController transferController;

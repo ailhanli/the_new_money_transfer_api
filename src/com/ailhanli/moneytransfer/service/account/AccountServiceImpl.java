@@ -1,6 +1,5 @@
 package com.ailhanli.moneytransfer.service.account;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,14 +10,13 @@ import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.service.exception.AccountNotFoundException;
 import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
-import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 	private static Logger log = Logger.getLogger(AccountServiceImpl.class);
 
 	private final AccountDAO accountDAO;
-
+	
 	public AccountServiceImpl(AccountDAO accountDAO) {
 		super();
 		this.accountDAO = accountDAO;
@@ -30,12 +28,9 @@ public class AccountServiceImpl implements AccountService {
 	 * @throws GeneralSystemException
 	 */
 	@Override
-	public Account getAccount(String accountId)
-			throws AccountNotFoundException, InputInvalidException, GeneralSystemException {
-
-		AccountIdValidator accountIdValidator = new AccountIdValidator();
-		accountIdValidator.validateAccountNumber(accountId);
-
+	public Account getAccount(Integer accountId)
+			throws AccountNotFoundException, GeneralSystemException {
+		
 		Integer accountIdAsInteger = Integer.valueOf(accountId);
 		try {
 			return accountDAO.findById(accountIdAsInteger);
@@ -61,17 +56,16 @@ public class AccountServiceImpl implements AccountService {
 			throw new GeneralSystemException();
 		}
 	}
-
-	/**
-	 * updateBalance method simply updates balance by accountId
-	 */
-	@Override
-	public Account updateBalance(Integer accountId, BigDecimal newBalance) throws GeneralSystemException {
+	
+	public void updateAccount(Account account) throws GeneralSystemException{
+		accountDAO.update(account);
+		
 		try {
-			return accountDAO.update(accountId, newBalance);
+			accountDAO.update(account);
 		} catch (Exception e) {
 			log.error(e);
 			throw new GeneralSystemException();
 		}
 	}
+
 }

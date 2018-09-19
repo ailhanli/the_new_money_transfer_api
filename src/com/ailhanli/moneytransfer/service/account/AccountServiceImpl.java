@@ -17,7 +17,7 @@ import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
 public class AccountServiceImpl implements AccountService {
 	private static Logger log = Logger.getLogger(AccountServiceImpl.class);
 
-	private AccountDAO accountDAO;
+	private final AccountDAO accountDAO;
 
 	public AccountServiceImpl(AccountDAO accountDAO) {
 		super();

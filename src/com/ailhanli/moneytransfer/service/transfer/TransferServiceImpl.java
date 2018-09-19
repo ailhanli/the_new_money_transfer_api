@@ -4,21 +4,25 @@ import java.math.BigDecimal;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.model.Transfer;
 import com.ailhanli.moneytransfer.service.account.AccountService;
 import com.ailhanli.moneytransfer.service.exception.AccountNotFoundException;
+import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
 import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
 import com.ailhanli.moneytransfer.service.exception.InsufficientBalanceException;
 import com.ailhanli.moneytransfer.service.transferlog.TransferLogService;
-import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
 
 @Service
+@Transactional
 public class TransferServiceImpl implements TransferService {
+	
 	private static Logger log = Logger.getLogger(TransferServiceImpl.class);
 
 	private final TransferLogService transferLogService;
+	
 	private final AccountService accountService;
 
 	public TransferServiceImpl(TransferLogService transferLogService, AccountService accountService) {

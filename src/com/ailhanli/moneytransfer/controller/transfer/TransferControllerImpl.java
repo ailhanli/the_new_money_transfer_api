@@ -22,7 +22,7 @@ public class TransferControllerImpl implements TransferController {
 
 	private static Logger log = Logger.getLogger(TransferControllerImpl.class);
 
-	private TransferService transferService;
+	private final TransferService transferService;
 
 	public TransferControllerImpl(TransferService transferService) {
 		super();

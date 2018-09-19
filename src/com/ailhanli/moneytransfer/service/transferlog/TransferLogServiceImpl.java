@@ -17,7 +17,7 @@ import com.ailhanli.moneytransfer.service.transfer.TransferIdValidator;
 public class TransferLogServiceImpl implements TransferLogService {
 	private static Logger log = Logger.getLogger(TransferLogServiceImpl.class);
 
-	private TransferLogDAO logDAO;
+	private final TransferLogDAO logDAO;
 
 	public TransferLogServiceImpl(TransferLogDAO logDAO) {
 		super();

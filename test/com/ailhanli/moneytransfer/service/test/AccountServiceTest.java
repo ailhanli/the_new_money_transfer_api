@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.ailhanli.moneytransfer.dao.account.AccountDAO;
-import com.ailhanli.moneytransfer.dao.exception.RecordNotFoundException;
+import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.service.account.AccountService;
 import com.ailhanli.moneytransfer.service.exception.AccountNotFoundException;

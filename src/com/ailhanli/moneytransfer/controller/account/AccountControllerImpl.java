@@ -21,7 +21,7 @@ import io.vertx.ext.web.RoutingContext;
 public class AccountControllerImpl implements AccountController {
 	private static Logger log = Logger.getLogger(AccountControllerImpl.class);
 
-	private AccountService accountService;
+	private final AccountService accountService;
 
 	public AccountControllerImpl(AccountService accountService) {
 		super();

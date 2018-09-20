@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.model.Transfer;
-import com.ailhanli.moneytransfer.properties.Config;
+import com.ailhanli.moneytransfer.properties.ApplicationProperties;
 import com.ailhanli.moneytransfer.properties.Messages;
 import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
 import com.ailhanli.moneytransfer.service.exception.InsufficientBalanceException;
@@ -20,11 +20,11 @@ public class TransferValidator {
 
 	private final Messages messages;
 	
-	private final Config config;
+	private final ApplicationProperties applicationConfig;
 
-	public TransferValidator(Messages messages, Config config) {
+	public TransferValidator(Messages messages, ApplicationProperties applicationConfig) {
 		this.messages = messages;
-		this.config = config;
+		this.applicationConfig = applicationConfig;
 	}
 
 	public void validateTransferInput(Transfer transfer) throws InputInvalidException {
@@ -37,7 +37,7 @@ public class TransferValidator {
 		// because we don't have currency service integration we only support
 		// {currencyCode} in application.properties to transfer.
 		if (!MoneyUtil.INSTANCE.validateCcyCode(transfer.getCurrencyCode())
-				|| !transfer.getCurrencyCode().equals(config.getCurrencyCode())) {
+				|| !transfer.getCurrencyCode().equals(applicationConfig.getCurrencyCode())) {
 			throw new InputInvalidException(messages.getTransferCurrencyInvalidMessage());
 		}
 	}

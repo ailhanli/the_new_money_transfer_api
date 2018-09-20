@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.ailhanli.moneytransfer.controller.account.AccountController;
 import com.ailhanli.moneytransfer.controller.transfer.TransferController;
 import com.ailhanli.moneytransfer.controller.transferlog.TransferLogController;
-import com.ailhanli.moneytransfer.properties.Config;
+import com.ailhanli.moneytransfer.properties.ApplicationProperties;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -21,7 +21,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 public class VertxServerVerticle extends AbstractVerticle {
 
     @Autowired
-    private Config applicationConfiguration;
+    private ApplicationProperties applicationConfiguration;
     
     @Autowired
     private  TransferController transferController;

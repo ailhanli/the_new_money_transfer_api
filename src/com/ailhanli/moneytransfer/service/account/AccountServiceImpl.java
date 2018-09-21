@@ -6,17 +6,17 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.ailhanli.moneytransfer.dao.account.AccountDAO;
+import com.ailhanli.moneytransfer.exception.AccountNotFoundException;
+import com.ailhanli.moneytransfer.exception.GeneralSystemException;
 import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.model.Account;
-import com.ailhanli.moneytransfer.service.exception.AccountNotFoundException;
-import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 	private static Logger log = Logger.getLogger(AccountServiceImpl.class);
 
 	private final AccountDAO accountDAO;
-	
+
 	public AccountServiceImpl(AccountDAO accountDAO) {
 		super();
 		this.accountDAO = accountDAO;
@@ -28,9 +28,8 @@ public class AccountServiceImpl implements AccountService {
 	 * @throws GeneralSystemException
 	 */
 	@Override
-	public Account getAccount(Integer accountId)
-			throws AccountNotFoundException, GeneralSystemException {
-		
+	public Account getAccount(Integer accountId) throws AccountNotFoundException, GeneralSystemException {
+
 		Integer accountIdAsInteger = Integer.valueOf(accountId);
 		try {
 			return accountDAO.findById(accountIdAsInteger);
@@ -49,23 +48,22 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public List<Account> getAllAccounts() throws GeneralSystemException {
 		try {
-			 List<Account> accounts=  accountDAO.getAllAccounts();
-			 return accounts;
+			List<Account> accounts = accountDAO.getAllAccounts();
+			return accounts;
 		} catch (Exception e) {
 			log.error(e);
 			throw new GeneralSystemException();
 		}
 	}
-	
-	public void updateAccount(Account account) throws GeneralSystemException{
+
+	public boolean updateAccount(Account account) throws GeneralSystemException {
 		accountDAO.update(account);
-		
-		try {
-			accountDAO.update(account);
-		} catch (Exception e) {
-			log.error(e);
+		boolean result = accountDAO.update(account);
+		if (!result) {
 			throw new GeneralSystemException();
 		}
+		
+		return result;
 	}
 
 }

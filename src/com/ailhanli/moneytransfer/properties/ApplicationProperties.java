@@ -14,18 +14,22 @@ import org.springframework.stereotype.Component;
 @PropertySource("classpath:application.properties")
 public class ApplicationProperties {
 
-    @Autowired
-    private Environment environment;
-    
-    public String applicationName() {
-        return environment.getProperty("spring.application.name");
-    }
+	private Environment environment;
 
-    public int httpPort() {
-        return environment.getProperty("server.port", Integer.class);
-    }
-    
-    public String getCurrencyCode(){
-    	return environment.getProperty("currency.code");
-    }
+	public ApplicationProperties(Environment environment) {
+		super();
+		this.environment = environment;
+	}
+
+	public String applicationName() {
+		return environment.getProperty("spring.application.name");
+	}
+
+	public int httpPort() {
+		return environment.getProperty("server.port", Integer.class);
+	}
+
+	public String getCurrencyCode() {
+		return environment.getProperty("currency.code");
+	}
 }

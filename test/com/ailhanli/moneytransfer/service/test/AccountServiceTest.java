@@ -1,30 +1,24 @@
 package com.ailhanli.moneytransfer.service.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ailhanli.moneytransfer.dao.account.AccountDAO;
-import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.service.account.AccountService;
 import com.ailhanli.moneytransfer.service.account.AccountServiceImpl;
-import com.ailhanli.moneytransfer.service.exception.AccountNotFoundException;
-import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
-import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicaton-context-test.xml")
@@ -41,7 +35,7 @@ public class AccountServiceTest {
 	}
 
 	@Test
-	public void test_retrieveAllAccounts() throws GeneralSystemException {
+	public void test_retrieveAllAccounts() throws Exception {
 
 		List<Account> accounts = new ArrayList<>();
 		Account acc1 = new Account("Yana Karkov", 1500, Currency.getInstance("EUR"));
@@ -57,27 +51,27 @@ public class AccountServiceTest {
 	}
 
 	@Test
-	public void test_retrieveAccount()
-			throws GeneralSystemException, RecordNotFoundException, AccountNotFoundException, InputInvalidException {
-		//arrange
+	public void test_retrieveAccount() throws Exception {
+		// arrange
 		Integer accountId = 1;
 		Account account = new Account(accountId, "Yana Karkov", 1500, Currency.getInstance("EUR"));
 
-		//act
+		// act
 		when(accountDAO.findById(accountId)).thenReturn(account);
 
-		//assert
+		// assert
 		assertEquals(account, accountService.getAccount(accountId));
 	}
 
 	@Test
-	public void test_updateAccountBalance() throws GeneralSystemException {
-		Account account = new Account("Yana Karkov", 1600, Currency.getInstance("EUR"));
-		Integer accountId = 0;
-		double newBalance = 100;
+	public void test_updateAccountBalance() throws Exception {
+		// arrange
+		Account account = new Account(1, "Yana Karkov", 1500, Currency.getInstance("EUR"));
 
-		when(accountDAO.update(accountId, newBalance)).thenReturn(account);
+		// act
+		when(accountDAO.update(account)).thenReturn(Boolean.TRUE);
 
-		assertEquals(account, accountService.updateBalance(accountId, newBalance));
+		// assert
+		assertTrue(accountService.updateAccount(account));
 	}
 }

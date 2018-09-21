@@ -11,7 +11,7 @@ public interface AccountDAO {
 	
 	Account findById(Integer id)throws RecordNotFoundException;
 	
-	void update(Account account);	
+	boolean update(Account account);	
 	
 	Integer insert(Account account);
 }

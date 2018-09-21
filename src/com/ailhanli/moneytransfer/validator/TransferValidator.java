@@ -1,16 +1,13 @@
 package com.ailhanli.moneytransfer.validator;
 
-import java.math.BigDecimal;
-
 import org.springframework.stereotype.Component;
 
+import com.ailhanli.moneytransfer.exception.InputInvalidException;
+import com.ailhanli.moneytransfer.exception.InsufficientBalanceException;
 import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.model.Transfer;
 import com.ailhanli.moneytransfer.properties.ApplicationProperties;
 import com.ailhanli.moneytransfer.properties.Messages;
-import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
-import com.ailhanli.moneytransfer.service.exception.InsufficientBalanceException;
-import com.ailhanli.moneytransfer.util.MoneyUtil;
 
 /**
  * Validator class for Transfer Input validation
@@ -20,33 +17,36 @@ public class TransferValidator {
 
 	private final Messages messages;
 	
-	private final ApplicationProperties applicationConfig;
+	private final ApplicationProperties applicationProperties;
 
-	public TransferValidator(Messages messages, ApplicationProperties applicationConfig) {
+	public TransferValidator(Messages messages, ApplicationProperties applicationProperties) {
 		this.messages = messages;
-		this.applicationConfig = applicationConfig;
+		this.applicationProperties = applicationProperties;
 	}
 
-	public void validateTransferInput(Transfer transfer) throws InputInvalidException {
+	public boolean validateTransferInput(Transfer transfer) throws InputInvalidException {
 		
-		//money to transfer should be greater than Zero.Negative or Zero amount is not allowed
-		if (!(transfer.getAmount().compareTo(BigDecimal.ZERO) != 1)) {
+		//money to transfer should be greater than Zero
+		if (transfer.getAmount()<=0) {
 			throw new InputInvalidException(messages.getTransferAmountInvalidMessage());
 		}
 
 		// because we don't have currency service integration we only support
 		// {currencyCode} in application.properties to transfer.
-		if (!MoneyUtil.INSTANCE.validateCcyCode(transfer.getCurrencyCode())
-				|| !transfer.getCurrencyCode().equals(applicationConfig.getCurrencyCode())) {
+		if ( !transfer.getCurrencyCode().toString().equals(applicationProperties.getCurrencyCode())) {
 			throw new InputInvalidException(messages.getTransferCurrencyInvalidMessage());
 		}
+		
+		return true;
 	}
 	
-	public void validateTransferAmount(Account sourceAccount, BigDecimal amoutToTransfer) throws InsufficientBalanceException{
+	public boolean validateTransferAmount(Account sourceAccount, double amoutToTransfer) throws InsufficientBalanceException{
 		//Balance of source account must be greater than amountToTransfer
-		BigDecimal balanceAfterTransfer = sourceAccount.getBalance().subtract(amoutToTransfer);
-		if (balanceAfterTransfer.compareTo(BigDecimal.ZERO) == -1) {
+		double balanceAfterTransfer = sourceAccount.getBalance()-amoutToTransfer;
+		if (balanceAfterTransfer<0) {
 			throw new InsufficientBalanceException(messages.getBalanceLimitedMessage());
 		}
+		
+		return true;
 	}
 }

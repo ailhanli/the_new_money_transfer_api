@@ -18,6 +18,12 @@ public class Transfer {
 
 	private TransferStatus status;
 
+	public Transfer(Integer transferId, Integer sourceAccountId, Integer destinationAccountId, double amount, Currency currencyCode,
+			String comment) {
+		this(sourceAccountId, destinationAccountId, amount, currencyCode, comment);
+		this.transferId= transferId;
+	}
+	
 	public Transfer(Integer sourceAccountId, Integer destinationAccountId, double amount, Currency currencyCode,
 			String comment) {
 		this.sourceAccountId = sourceAccountId;

@@ -2,10 +2,10 @@ package com.ailhanli.moneytransfer.service.account;
 
 import java.util.List;
 
+import com.ailhanli.moneytransfer.exception.AccountNotFoundException;
+import com.ailhanli.moneytransfer.exception.GeneralSystemException;
+import com.ailhanli.moneytransfer.exception.InputInvalidException;
 import com.ailhanli.moneytransfer.model.Account;
-import com.ailhanli.moneytransfer.service.exception.AccountNotFoundException;
-import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
-import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
 
 public interface AccountService {
 
@@ -14,5 +14,5 @@ public interface AccountService {
 	Account getAccount(Integer accountId)
 			throws AccountNotFoundException, InputInvalidException, GeneralSystemException;
 	
-	void updateAccount(Account account) throws GeneralSystemException;
+	boolean updateAccount(Account account) throws GeneralSystemException;
 }

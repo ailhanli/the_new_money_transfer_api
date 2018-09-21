@@ -6,10 +6,10 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.ailhanli.moneytransfer.dao.transferlog.TransferLogDAO;
+import com.ailhanli.moneytransfer.exception.GeneralSystemException;
 import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
+import com.ailhanli.moneytransfer.exception.TransferNotFoundException;
 import com.ailhanli.moneytransfer.model.Transfer;
-import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
-import com.ailhanli.moneytransfer.service.exception.TransferNotFoundException;
 
 @Service
 public class TransferLogServiceImpl implements TransferLogService {

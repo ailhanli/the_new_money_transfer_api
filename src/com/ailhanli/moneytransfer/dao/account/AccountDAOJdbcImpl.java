@@ -65,8 +65,14 @@ public class AccountDAOJdbcImpl implements AccountDAO {
 	}
 
 	@Override
-	public void update(Account account) {
-		jdbcTemplate.update(UPDATE_ACCOUNT_BALANCE, account.getBalance(), account.getAccountId());
+	public boolean update(Account account) {
+		try {
+			jdbcTemplate.update(UPDATE_ACCOUNT_BALANCE, account.getBalance(), account.getAccountId());
+			return true;
+		} catch (Exception e) {
+			log.error(e);
+			return false;
+		}
 	}
 
 	@Override

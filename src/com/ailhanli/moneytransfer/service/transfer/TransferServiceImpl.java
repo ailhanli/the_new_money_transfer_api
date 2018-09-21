@@ -1,18 +1,16 @@
 package com.ailhanli.moneytransfer.service.transfer;
 
-import java.math.BigDecimal;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ailhanli.moneytransfer.exception.AccountNotFoundException;
+import com.ailhanli.moneytransfer.exception.GeneralSystemException;
+import com.ailhanli.moneytransfer.exception.InputInvalidException;
+import com.ailhanli.moneytransfer.exception.InsufficientBalanceException;
 import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.model.Transfer;
 import com.ailhanli.moneytransfer.service.account.AccountService;
-import com.ailhanli.moneytransfer.service.exception.AccountNotFoundException;
-import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;
-import com.ailhanli.moneytransfer.service.exception.InputInvalidException;
-import com.ailhanli.moneytransfer.service.exception.InsufficientBalanceException;
 import com.ailhanli.moneytransfer.service.transferlog.TransferLogService;
 import com.ailhanli.moneytransfer.validator.TransferValidator;
 
@@ -54,7 +52,7 @@ public class TransferServiceImpl implements TransferService {
 		Account sourceAccount = accountService.getAccount(sourceAccountId);
 		Account destinationAccount = accountService.getAccount(destinationAccountId);
 		
-		BigDecimal amountToTransfer = transfer.getAmount();
+		double amountToTransfer = transfer.getAmount();
 		synchronized (this) {
 			try {
 				//validate if it is valid amount to transfer

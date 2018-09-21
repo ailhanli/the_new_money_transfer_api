@@ -24,16 +24,16 @@ import com.ailhanli.moneytransfer.model.Transfer;
 public class TransferLogDAOImpl implements TransferLogDAO {
 	private static Logger log = Logger.getLogger(TransferLogDAOImpl.class);
 
-	private final String CREATE_TABLE="Create Table TransferLog(transferId int generated always as identity primary key, sourceAccountId int, destinationAccountId int, amount float, currencyCode varchar(3), comment varchar(200))";
-	
-	private final String QUERY_ALL_ACCOUNTS="Select * from TransferLog";
-	
-	private final String QUERY_FIND_BY_ID="Select * from TransferLog where transferId=?";
-	
-	private final String INSERT_TRANSFER_QUERY="Insert into TransferLog(sourceAccountId,destinationAccountId, amount, currencyCode, comment ) values(?,?,?,?,?)";
-	
+	private final String CREATE_TABLE = "Create Table Transfer(transfer_Id int generated always as identity primary key, source_account_id int, destination_account_id int, amount float, currency varchar(3), comment varchar(200))";
+
+	private final String QUERY_ALL_ACCOUNTS = "Select * from Transfer";
+
+	private final String QUERY_FIND_BY_ID = "Select * from Transfer where transfer_id=?";
+
+	private final String INSERT_TRANSFER_QUERY = "Insert into Transfer(source_account_id,destination_account_id, amount, currency, comment ) values(?,?,?,?,?)";
+
 	private JdbcTemplate jdbcTemplate;
-	
+
 	public TransferLogDAOImpl(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
@@ -46,7 +46,7 @@ public class TransferLogDAOImpl implements TransferLogDAO {
 			log.warn("table is already created.");
 		}
 	}
-	
+
 	@Override
 	public List<Transfer> findAll() {
 		return jdbcTemplate.query(QUERY_ALL_ACCOUNTS, new TransferMapping());
@@ -55,7 +55,8 @@ public class TransferLogDAOImpl implements TransferLogDAO {
 	@Override
 	public Transfer findById(Integer id) throws RecordNotFoundException {
 		try {
-			Transfer transfer = jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, new Object[] {id}, new TransferMapping());
+			Transfer transfer = jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, new Object[] { id },
+					new TransferMapping());
 			return transfer;
 		} catch (EmptyResultDataAccessException e) {
 			throw new RecordNotFoundException(id);
@@ -80,9 +81,12 @@ public class TransferLogDAOImpl implements TransferLogDAO {
 	}
 }
 
-class TransferMapping implements RowMapper<Transfer>{ //sourceAccountId,destinationAccountId, amount, currencyCode, comment
+class TransferMapping implements RowMapper<Transfer> { // sourceAccountId,destinationAccountId,
+														// amount, currencyCode,
+														// comment
 	@Override
 	public Transfer mapRow(ResultSet rs, int rowNum) throws SQLException {
-		return new Transfer(rs.getInt("sourceAccountId"), rs.getInt("destinationAccountId"), rs.getDouble("amount"), Currency.getInstance(rs.getString("currencyCode")), rs.getString("comment"));
+		return new Transfer(rs.getInt("source_account_Id"), rs.getInt("destination_account_Id"), rs.getDouble("amount"),
+				Currency.getInstance(rs.getString("currency")), rs.getString("comment"));
 	}
 }

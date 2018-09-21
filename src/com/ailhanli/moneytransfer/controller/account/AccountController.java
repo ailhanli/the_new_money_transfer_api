@@ -6,4 +6,6 @@ public interface AccountController {
 	void getAccount(RoutingContext routingContext);	
 	
 	void getAllAccount(RoutingContext routingContext);	
+	
+	void createAccount(RoutingContext routingContext);
 }

@@ -1,10 +1,6 @@
 package com.ailhanli.moneytransfer.model;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Currency;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Account {
 

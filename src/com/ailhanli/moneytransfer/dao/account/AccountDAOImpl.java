@@ -1,7 +1,5 @@
 package com.ailhanli.moneytransfer.dao.account;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +12,6 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -22,24 +19,23 @@ import org.springframework.stereotype.Repository;
 
 import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.model.Account;
-import com.ailhanli.moneytransfer.service.account.AccountServiceImpl;
 
 @Repository
-public class AccountDAOJdbcImpl implements AccountDAO {
-	private static Logger log = Logger.getLogger(AccountDAOJdbcImpl.class);
-
-	private final String CREATE_TABLE_ACCOUNT = "Create Table Account(accountId int generated always as identity primary key, name varchar(100), balance float, currency char(3))";
+public class AccountDAOImpl implements AccountDAO {
+	private static Logger log = Logger.getLogger(AccountDAOImpl.class);
+	
+	private final String CREATE_TABLE_ACCOUNT = "Create Table Account(account_id int generated always as identity primary key, name varchar(100), balance float, currency char(3))";
 	private final String QUERY_ALL_ACCOUNTS = "Select * from Account";
-	private final String QUERY_ACCOUNT_BY_ID = "Select * from Account where accountId=?";
-	private final String UPDATE_ACCOUNT_BALANCE = "Update  Account set balance=? where accountId=?";
+	private final String QUERY_ACCOUNT_BY_ID = "Select * from Account where account_id=?";
+	private final String UPDATE_ACCOUNT_BALANCE = "Update  Account set balance=? where account_id=?";
 	private final String INSERT_ACCOUNT = "Insert into Account( name, balance, currency) values(?,?,?)";
 
 	private final JdbcTemplate jdbcTemplate;
 
-	public AccountDAOJdbcImpl(JdbcTemplate jdbcTemplate) {
+	public AccountDAOImpl(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-
+	
 	@PostConstruct
 	public void createTable() {
 		try {
@@ -96,7 +92,7 @@ public class AccountDAOJdbcImpl implements AccountDAO {
 class AccountMapping implements RowMapper<Account> {
 	@Override
 	public Account mapRow(ResultSet rs, int rowNum) throws SQLException {
-		return new Account(rs.getInt("accountId"), rs.getString("name"), rs.getDouble("balance"),
+		return new Account(rs.getInt("account_Id"), rs.getString("name"), rs.getDouble("balance"),
 				Currency.getInstance(rs.getString("currency")));
 	}
 }

@@ -5,8 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 
 import io.vertx.core.Vertx;
 
@@ -14,7 +13,7 @@ import io.vertx.core.Vertx;
  * This is a entry point of application
  * */
 @SpringBootApplication
-@Configuration("application-context-prod.xml")
+@ImportResource({"classpath*:application-context-test.xml"})
 public class VertxApplication {
 
 	@Autowired

@@ -9,10 +9,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.ailhanli.moneytransfer.exception.GeneralSystemException;
 import com.jayway.restassured.RestAssured;
 
 public class MoneyTransferApiTest {
-
+	
     @BeforeClass
     public static void configureRestAssured() {
         RestAssured.baseURI = "http://localhost";
@@ -24,19 +25,20 @@ public class MoneyTransferApiTest {
         RestAssured.reset();
     }
 
-   @Test
-    public void test_retrieveAllAccounts() {
+    @Test
+    public void test_retrieveAllAccounts() throws GeneralSystemException {
+	   
         final int id = get("/api/accounts").then()
                 .assertThat()
                 .statusCode(200)
                 .extract()
-                .jsonPath().getInt("find { it.name==\"Yana Karkov\" }.accountId");
+                .jsonPath().getInt("find { it.name==\"Omer\" }.accountId");
         
         get("/api/accounts/" + id).then()
                 .assertThat()
                 .statusCode(200)
                 .body("accountId", equalTo(id))
-                .body("name", equalTo("Yana Karkov"))
+                .body("name", equalTo("Omer"))
                 .body("currency", equalTo("EUR"));
     }
 
@@ -46,7 +48,7 @@ public class MoneyTransferApiTest {
                 .assertThat()
                 .statusCode(200)
                 .body("accountId", equalTo(0))
-                .body("name", equalTo("Yana Karkov"))
+                .body("name", equalTo("Omer"))
                 .body("currency", equalTo("EUR"));
     }
 

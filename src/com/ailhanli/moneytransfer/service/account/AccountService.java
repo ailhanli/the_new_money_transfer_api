@@ -15,4 +15,6 @@ public interface AccountService {
 			throws AccountNotFoundException, InputInvalidException, GeneralSystemException;
 	
 	boolean updateAccount(Account account) throws GeneralSystemException;
+	
+	Integer createNewAccount(Account account)throws GeneralSystemException;
 }

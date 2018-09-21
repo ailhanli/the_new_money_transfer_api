@@ -56,6 +56,8 @@ public class VertxServerVerticle extends AbstractVerticle {
 		
         router.get("/api/accounts").handler(accountController::getAllAccount);
 		router.get("/api/accounts/:accountId").handler(accountController::getAccount);
+		router.post("/api/accounts").handler(accountController::createAccount);
+
 		router.get("/api/transfers").handler(transferLogController::getAllTransfers);
 		router.get("/api/transfers/:transferId").handler(transferLogController::getTransfer);
 		router.post("/api/transfers").handler(transferController::newTransfer);

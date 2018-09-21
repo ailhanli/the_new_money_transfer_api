@@ -18,7 +18,7 @@ import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.model.Transfer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/applicaton-context-test.xml")
+@ContextConfiguration("/application-context-test.xml")
 @Transactional
 public class TransferLogDAOTest {
 
@@ -54,7 +54,7 @@ public class TransferLogDAOTest {
 	@Test(expected= RecordNotFoundException.class)
 	public void test_findNonExistingTransactionLog() throws RecordNotFoundException {
 		//arrange
-		int id =transferLogDAO.create(new Transfer(1, 1, 100, Currency.getInstance("EUR"), "For test"));
+		transferLogDAO.create(new Transfer(1, 1, 100, Currency.getInstance("EUR"), "For test"));
 		
 		//act
 		transferLogDAO.findById(Integer.MAX_VALUE);

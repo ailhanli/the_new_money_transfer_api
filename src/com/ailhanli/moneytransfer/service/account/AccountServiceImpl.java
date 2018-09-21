@@ -57,12 +57,17 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	public boolean updateAccount(Account account) throws GeneralSystemException {
-		accountDAO.update(account);
 		boolean result = accountDAO.update(account);
 		if (!result) {
 			throw new GeneralSystemException();
 		}
 		
+		return result;
+	}
+
+	@Override
+	public Integer createNewAccount(Account account) throws GeneralSystemException {
+		Integer result = accountDAO.insert(account);
 		return result;
 	}
 

@@ -1,7 +1,5 @@
 package com.ailhanli.moneytransfer.exception;
 
-import java.math.BigDecimal;
-
 public class InsufficientBalanceException extends Exception {
 
 	public static final String ERROR_CODE=ErrorCodes.ERROR_CODE_INSUFFICIENT_BALANCE;

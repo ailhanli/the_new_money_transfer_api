@@ -22,7 +22,7 @@ import com.ailhanli.moneytransfer.service.transferlog.TransferLogService;
 import com.ailhanli.moneytransfer.service.transferlog.TransferLogServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/applicaton-context-test.xml")
+@ContextConfiguration("/application-context-test.xml")
 @Transactional
 public class TransferLogServiceTest {
 

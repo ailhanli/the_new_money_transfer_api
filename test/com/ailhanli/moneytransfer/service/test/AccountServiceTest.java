@@ -21,7 +21,7 @@ import com.ailhanli.moneytransfer.service.account.AccountService;
 import com.ailhanli.moneytransfer.service.account.AccountServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/applicaton-context-test.xml")
+@ContextConfiguration("/application-context-test.xml")
 @Transactional
 public class AccountServiceTest {
 
@@ -73,5 +73,18 @@ public class AccountServiceTest {
 
 		// assert
 		assertTrue(accountService.updateAccount(account));
+	}
+	
+	@Test
+	public void test_createNewAccount() throws Exception {
+		// arrange
+		Integer accountId = 1;
+		Account account = new Account(accountId, "Yana Karkov", 1500, Currency.getInstance("EUR"));
+
+		// act
+		when(accountDAO.insert(account)).thenReturn(accountId);
+
+		// assert
+		assertEquals(accountId, accountService.createNewAccount(account));
 	}
 }

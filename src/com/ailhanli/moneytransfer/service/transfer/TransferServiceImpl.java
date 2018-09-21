@@ -15,7 +15,6 @@ import com.ailhanli.moneytransfer.service.transferlog.TransferLogService;
 import com.ailhanli.moneytransfer.validator.TransferValidator;
 
 @Service
-@Transactional
 public class TransferServiceImpl implements TransferService {
 
 	private static Logger log = Logger.getLogger(TransferServiceImpl.class);
@@ -41,6 +40,7 @@ public class TransferServiceImpl implements TransferService {
 	 * 
 	 */
 	@Override
+	@Transactional
 	public void transferMoney(Transfer transfer) throws AccountNotFoundException, InsufficientBalanceException,
 			InputInvalidException, GeneralSystemException {
 		

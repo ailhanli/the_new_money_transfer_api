@@ -4,10 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.List;
 
@@ -21,10 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ailhanli.moneytransfer.dao.account.AccountDAO;
 import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.model.Account;
-import com.ailhanli.moneytransfer.service.account.AccountService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/applicaton-context-test.xml")
+@ContextConfiguration("/application-context-test.xml")
 @Transactional
 public class AccountDAOJdbcTest {
 		

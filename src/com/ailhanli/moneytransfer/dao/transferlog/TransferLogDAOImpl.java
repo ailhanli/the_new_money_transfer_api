@@ -1,11 +1,20 @@
 package com.ailhanli.moneytransfer.dao.transferlog;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Currency;
 import java.util.List;
-import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.apache.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
@@ -13,36 +22,67 @@ import com.ailhanli.moneytransfer.model.Transfer;
 
 @Repository
 public class TransferLogDAOImpl implements TransferLogDAO {
+	private static Logger log = Logger.getLogger(TransferLogDAOImpl.class);
 
-	private final Map<Integer, Transfer> transferDB = new LinkedHashMap<>();
+	private final String CREATE_TABLE="Create Table TransferLog(transferId int generated always as identity primary key, sourceAccountId int, destinationAccountId int, amount float, currencyCode varchar(3), comment varchar(200))";
 	
-	public TransferLogDAOImpl() {
-		Transfer tr1 = new Transfer(1, 2, new BigDecimal("650"), "EUR", "Rent");
-		transferDB.put(tr1.getTransferId(), tr1);
-		Transfer tr2 = new Transfer(0, 2, new BigDecimal("200"), "EUR", "Happy birthday");
-		transferDB.put(tr2.getTransferId(), tr2);
-		Transfer tr3 = new Transfer(1, 0, new BigDecimal("100"), "EUR", "Groceries");
-		transferDB.put(tr2.getTransferId(), tr3);
+	private final String QUERY_ALL_ACCOUNTS="Select * from TransferLog";
+	
+	private final String QUERY_FIND_BY_ID="Select * from TransferLog where transferId=?";
+	
+	private final String INSERT_TRANSFER_QUERY="Insert into TransferLog(sourceAccountId,destinationAccountId, amount, currencyCode, comment ) values(?,?,?,?,?)";
+	
+	private JdbcTemplate jdbcTemplate;
+	
+	public TransferLogDAOImpl(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
+	@PostConstruct
+	public void createTable() {
+		try {
+			jdbcTemplate.update(CREATE_TABLE);
+		} catch (Exception e) {
+			log.warn("table is already created.");
+		}
+	}
+	
 	@Override
 	public List<Transfer> findAll() {
-		return new ArrayList<>(transferDB.values());
+		return jdbcTemplate.query(QUERY_ALL_ACCOUNTS, new TransferMapping());
 	}
 
 	@Override
 	public Transfer findById(Integer id) throws RecordNotFoundException {
-		Transfer transfer = transferDB.get(id);
-		if (transfer == null) {
+		try {
+			Transfer transfer = jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, new Object[] {id}, new TransferMapping());
+			return transfer;
+		} catch (EmptyResultDataAccessException e) {
 			throw new RecordNotFoundException(id);
 		}
-
-		return transfer;
 	}
 
 	@Override
 	public Integer create(Transfer transfer) {
-		transferDB.put(transfer.getTransferId(), transfer);
-		return transfer.getTransferId();
+		KeyHolder holder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(INSERT_TRANSFER_QUERY, Statement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, transfer.getSourceAccountId());
+			ps.setInt(2, transfer.getDestinationAccountId());
+			ps.setDouble(3, transfer.getAmount());
+			ps.setString(4, transfer.getCurrencyCode().toString());
+			ps.setString(5, transfer.getComment());
+			return ps;
+		}, holder);
+
+		return holder.getKey().intValue();
+	}
+}
+
+class TransferMapping implements RowMapper<Transfer>{ //sourceAccountId,destinationAccountId, amount, currencyCode, comment
+	@Override
+	public Transfer mapRow(ResultSet rs, int rowNum) throws SQLException {
+		return new Transfer(rs.getInt("sourceAccountId"), rs.getInt("destinationAccountId"), rs.getDouble("amount"), Currency.getInstance(rs.getString("currencyCode")), rs.getString("comment"));
 	}
 }

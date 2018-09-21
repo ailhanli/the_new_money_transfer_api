@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.ailhanli.moneytransfer.dao.exception.RecordNotFoundException;
+import com.ailhanli.moneytransfer.dao.test.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.dao.transferlog.TransferLogDAO;
 import com.ailhanli.moneytransfer.model.Transfer;
 import com.ailhanli.moneytransfer.service.exception.GeneralSystemException;

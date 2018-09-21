@@ -1,39 +1,30 @@
 package com.ailhanli.moneytransfer.model;
 
-import java.math.BigDecimal;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Currency;
 
 public class Transfer {
 
-	private static final AtomicInteger COUNTER = new AtomicInteger(0);
-
-	private final Integer transferId;
+	private Integer transferId;
 
 	private Integer sourceAccountId;
 
 	private Integer destinationAccountId;
 
-	private BigDecimal amount;
+	private double amount;
 
-	private String currencyCode;
+	private Currency currencyCode;
 
 	private String comment;
 
 	private TransferStatus status;
 
-	public Transfer(Integer sourceAccountId, Integer destinationAccountId, BigDecimal amount, String currencyCode,
+	public Transfer(Integer sourceAccountId, Integer destinationAccountId, double amount, Currency currencyCode,
 			String comment) {
-		this.transferId = COUNTER.getAndIncrement();
 		this.sourceAccountId = sourceAccountId;
 		this.destinationAccountId = destinationAccountId;
 		this.amount = amount;
 		this.currencyCode = currencyCode;
 		this.comment = comment;
-		this.status = TransferStatus.CREATED;
-	}
-
-	public Transfer() {
-		this.transferId = COUNTER.getAndIncrement();
 		this.status = TransferStatus.CREATED;
 	}
 
@@ -57,24 +48,20 @@ public class Transfer {
 		this.destinationAccountId = destinationAccountId;
 	}
 
-	public BigDecimal getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
-	public String getCurrencyCode() {
+	public Currency getCurrencyCode() {
 		return currencyCode;
 	}
 
-	public void setCurrencyCode(String currencyCode) {
+	public void setCurrencyCode(Currency currencyCode) {
 		this.currencyCode = currencyCode;
-	}
-
-	public static AtomicInteger getCounter() {
-		return COUNTER;
 	}
 
 	public String getComment() {
@@ -112,9 +99,9 @@ public class Transfer {
 
 	@Override
 	public String toString() {
-		return "TransferDTO{" + "transferId=" + transferId + ", sourceAccountId=" + sourceAccountId + ", destinationAccountId="
-				+ destinationAccountId + ", amount=" + amount + ", currencyCode=" + currencyCode + ", comment='" + comment
-				+ '\'' + ", status=" + status + '}';
+		return "TransferDTO{" + "transferId=" + transferId + ", sourceAccountId=" + sourceAccountId
+				+ ", destinationAccountId=" + destinationAccountId + ", amount=" + amount + ", currencyCode="
+				+ currencyCode + ", comment='" + comment + '\'' + ", status=" + status + '}';
 	}
 
 	public enum TransferStatus {

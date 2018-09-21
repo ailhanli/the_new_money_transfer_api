@@ -1,30 +1,33 @@
 package com.ailhanli.moneytransfer.model;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Account {
 
-    private static final AtomicInteger COUNTER = new AtomicInteger();
-
-    private final Integer accountId;
+    private Integer accountId;
 
     private String name;
 
-    private BigDecimal balance;
+    private double balance;
 
     private Currency currency;
 
-    public Account(String name, BigDecimal balance, Currency currency) {
-        this.accountId = COUNTER.getAndIncrement();
+    public Account(Integer accountId, String name, double balance, Currency currency) {
+    	this(name, balance, currency);
+    	this.accountId = accountId;
+    }
+    
+    public Account(String name, double balance, Currency currency) {
         this.name = name;
         this.balance = balance;
         this.currency = currency;
     }
 
     public Account() {
-        this.accountId = COUNTER.getAndIncrement();
     }
 
     public Integer getAccountId() {
@@ -39,11 +42,11 @@ public class Account {
         this.name = name;
     }
 
-    public BigDecimal getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
@@ -80,11 +83,11 @@ public class Account {
                 '}';
     }
 
-    public void withdraw(BigDecimal amount) {
-        this.balance = balance.subtract(amount);
+    public void withdraw(double amount) {
+        this.balance = balance-amount;
     }
 
-    public void deposit(BigDecimal amount) {
-        this.balance = balance.add(amount);
+    public void deposit(double amount) {
+        this.balance = balance+amount;
     }
 }

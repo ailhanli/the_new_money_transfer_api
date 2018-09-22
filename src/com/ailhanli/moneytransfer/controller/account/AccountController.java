@@ -8,4 +8,6 @@ public interface AccountController {
 	void getAllAccount(RoutingContext routingContext);	
 	
 	void createAccount(RoutingContext routingContext);
+	
+	void deleteAccount(RoutingContext routingContext);
 }

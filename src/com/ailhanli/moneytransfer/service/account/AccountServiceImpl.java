@@ -71,4 +71,14 @@ public class AccountServiceImpl implements AccountService {
 		return result;
 	}
 
+	@Override
+	public boolean deleteAccount(Integer accountId) throws AccountNotFoundException {
+
+		try {
+			return accountDAO.delete(accountId);
+		} catch (RecordNotFoundException e) {
+			throw new AccountNotFoundException(accountId);
+		}
+	}
+
 }

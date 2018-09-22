@@ -75,4 +75,19 @@ public class AccountControllerImpl implements AccountController {
 			routingContext.response().setStatusCode(400).end(Json.encodePrettily(Error.of(e)));
 		}
 	}
+
+	@Override
+	public void deleteAccount(RoutingContext routingContext) {
+		try {
+			final Integer accountId = Json.decodeValue(routingContext.getBodyAsString(), Integer.class);
+			log.debug(accountId);
+
+			boolean isDeleted= accountService.deleteAccount(accountId);
+			routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+					.end(Json.encodePrettily(isDeleted));
+		} catch (Exception e) {
+			log.error(e);
+			routingContext.response().setStatusCode(400).end(Json.encodePrettily(Error.of(e)));
+		}
+	}
 }

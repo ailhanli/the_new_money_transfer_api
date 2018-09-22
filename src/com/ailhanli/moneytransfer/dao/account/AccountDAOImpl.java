@@ -28,6 +28,7 @@ public class AccountDAOImpl implements AccountDAO {
 	private final String QUERY_ALL_ACCOUNTS = "Select * from Account";
 	private final String QUERY_ACCOUNT_BY_ID = "Select * from Account where account_id=?";
 	private final String UPDATE_ACCOUNT_BALANCE = "Update  Account set balance=? where account_id=?";
+	private final String DELETE_ACCOUNT = "Delete  Account  where account_id=?";
 	private final String INSERT_ACCOUNT = "Insert into Account( name, balance, currency) values(?,?,?)";
 
 	private final JdbcTemplate jdbcTemplate;
@@ -85,6 +86,19 @@ public class AccountDAOImpl implements AccountDAO {
 		}, holder);
 
 		return holder.getKey().intValue();
+	}
+
+	@Override
+	public boolean delete(Integer accountId) throws RecordNotFoundException {
+		
+		findById(accountId);
+		try {
+			jdbcTemplate.update(DELETE_ACCOUNT,  accountId);
+			return true;
+		} catch (Exception e) {
+			log.error(e);
+			return false;
+		}
 	}
 
 }

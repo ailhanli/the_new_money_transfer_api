@@ -13,5 +13,7 @@ public interface AccountDAO {
 	
 	boolean update(Account account);	
 	
+	boolean delete(Integer accountId) throws RecordNotFoundException;	
+	
 	Integer insert(Account account);
 }

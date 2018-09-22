@@ -1,0 +1,2 @@
+2018-09-22 00:03:15 ERROR AccountControllerImpl:89 - io.vertx.core.json.DecodeException: Failed to decode: Can not deserialize instance of java.lang.Integer out of START_OBJECT token
+ at [Source: {"accountId":null,"name":"Abdullah","balance":250.0,"currency":"EUR"}; line: 1, column: 1]

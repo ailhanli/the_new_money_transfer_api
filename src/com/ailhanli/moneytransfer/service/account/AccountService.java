@@ -16,5 +16,7 @@ public interface AccountService {
 	
 	boolean updateAccount(Account account) throws GeneralSystemException;
 	
+	boolean deleteAccount(Integer accountId) throws AccountNotFoundException;
+	
 	Integer createNewAccount(Account account)throws GeneralSystemException;
 }

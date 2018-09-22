@@ -1,22 +1,20 @@
 package com.ailhanli.moneytransfer.dao.transferlog;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Currency;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.ailhanli.moneytransfer.dao.mapper.TransferMapping;
 import com.ailhanli.moneytransfer.exception.RecordNotFoundException;
 import com.ailhanli.moneytransfer.model.Transfer;
 
@@ -24,13 +22,13 @@ import com.ailhanli.moneytransfer.model.Transfer;
 public class TransferLogDAOImpl implements TransferLogDAO {
 	private static Logger log = Logger.getLogger(TransferLogDAOImpl.class);
 
-	private final String CREATE_TABLE = "Create Table Transfer(transfer_Id int generated always as identity primary key, source_account_id int, destination_account_id int, amount float, currency varchar(3), comment varchar(200))";
-
-	private final String QUERY_ALL_ACCOUNTS = "Select * from Transfer";
-
-	private final String QUERY_FIND_BY_ID = "Select * from Transfer where transfer_id=?";
-
-	private final String INSERT_TRANSFER_QUERY = "Insert into Transfer(source_account_id,destination_account_id, amount, currency, comment ) values(?,?,?,?,?)";
+	private final String CREATE_TABLE_SQL = "Create Table Transfer(transfer_Id int generated always as identity primary key, source_account_id int, destination_account_id int, amount float, currency varchar(3), comment varchar(200))";
+	private final String QUERY_ALL_SQL = "Select * from Transfer";
+	private final String QUERY_BY_ID_SQL = "Select * from Transfer where transfer_id=?";
+	private final String INSERT_QUERY = "Insert into Transfer(source_account_id,destination_account_id, amount, currency, comment ) values(?,?,?,?,?)";
+	
+	@Autowired
+	private TransferMapping transferMapping;
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -41,7 +39,7 @@ public class TransferLogDAOImpl implements TransferLogDAO {
 	@PostConstruct
 	public void createTable() {
 		try {
-			jdbcTemplate.update(CREATE_TABLE);
+			jdbcTemplate.update(CREATE_TABLE_SQL);
 		} catch (Exception e) {
 			log.warn("table is already created.");
 		}
@@ -49,14 +47,13 @@ public class TransferLogDAOImpl implements TransferLogDAO {
 
 	@Override
 	public List<Transfer> findAll() {
-		return jdbcTemplate.query(QUERY_ALL_ACCOUNTS, new TransferMapping());
+		return jdbcTemplate.query(QUERY_ALL_SQL, transferMapping);
 	}
 
 	@Override
 	public Transfer findById(Integer id) throws RecordNotFoundException {
 		try {
-			Transfer transfer = jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, new Object[] { id },
-					new TransferMapping());
+			Transfer transfer = jdbcTemplate.queryForObject(QUERY_BY_ID_SQL, new Object[] { id }, transferMapping);
 			return transfer;
 		} catch (EmptyResultDataAccessException e) {
 			throw new RecordNotFoundException(id);
@@ -68,7 +65,7 @@ public class TransferLogDAOImpl implements TransferLogDAO {
 		KeyHolder holder = new GeneratedKeyHolder();
 
 		jdbcTemplate.update(connection -> {
-			PreparedStatement ps = connection.prepareStatement(INSERT_TRANSFER_QUERY, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement ps = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, transfer.getSourceAccountId());
 			ps.setInt(2, transfer.getDestinationAccountId());
 			ps.setDouble(3, transfer.getAmount());
@@ -78,15 +75,5 @@ public class TransferLogDAOImpl implements TransferLogDAO {
 		}, holder);
 
 		return holder.getKey().intValue();
-	}
-}
-
-class TransferMapping implements RowMapper<Transfer> { // sourceAccountId,destinationAccountId,
-														// amount, currencyCode,
-														// comment
-	@Override
-	public Transfer mapRow(ResultSet rs, int rowNum) throws SQLException {
-		return new Transfer(rs.getInt("source_account_Id"), rs.getInt("destination_account_Id"), rs.getDouble("amount"),
-				Currency.getInstance(rs.getString("currency")), rs.getString("comment"));
 	}
 }

@@ -37,7 +37,7 @@ public class AccountDAOJdbcTest {
 		List<Account> accounts = accountDAO.getAllAccounts();
 		
 		//assert
-		assertEquals(2, accounts.size());
+		assertEquals("number of the accounts is different than expected", 2, accounts.size());
 	}
 	
 	
@@ -50,10 +50,9 @@ public class AccountDAOJdbcTest {
 		//act
 		try {
 			Account foundAccount = accountDAO.findById(id);
-			System.out.println(foundAccount);
 			
 			//assert
-			assertEquals(id, foundAccount.getAccountId());
+			assertEquals("found account id is different than expected",id, foundAccount.getAccountId());
 		} catch (RecordNotFoundException e) {
 			fail("no account was found even one exist");
 		}
@@ -76,7 +75,7 @@ public class AccountDAOJdbcTest {
 		Account lastStateOfAccount = accountDAO.findById(id);
 		
 		//assert
-		assertEquals(new Double(80.5), new Double(lastStateOfAccount.getBalance()));
+		assertEquals("updated balance is different than expected",new Double(80.5), new Double(lastStateOfAccount.getBalance()));
 	}
 	
 	@Test
@@ -89,6 +88,6 @@ public class AccountDAOJdbcTest {
 		Account foundAccount = accountDAO.findById(accountId);
 		
 		//assert
-		assertNotNull(foundAccount);
+		assertNotNull("new account cant created",foundAccount);
 	}
 }

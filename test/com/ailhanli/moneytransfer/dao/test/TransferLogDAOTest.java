@@ -36,7 +36,7 @@ public class TransferLogDAOTest {
 		List<Transfer> transfers= transferLogDAO.findAll();
 		
 		//assert
-		assertEquals(2, transfers.size());
+		assertEquals("number of the transferlogs is different than expected",2, transfers.size());
 	}
 	
 	@Test
@@ -48,7 +48,7 @@ public class TransferLogDAOTest {
 		Transfer transfer = transferLogDAO.findById(id);
 		
 		//assert
-		assertNotNull(transfer);
+		assertNotNull("transfer log is not found for given id",transfer);
 	}
 	
 	@Test(expected= RecordNotFoundException.class)
@@ -68,7 +68,7 @@ public class TransferLogDAOTest {
 		int id =transferLogDAO.create(transferLogToAdd);
 		Transfer foundTransferLog = transferLogDAO.findById(id);
 		
-		assertNotNull(foundTransferLog);
+		assertNotNull("new transferlog cant created",foundTransferLog);
 	}
 	
 }

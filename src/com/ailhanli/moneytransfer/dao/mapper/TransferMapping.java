@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.ailhanli.moneytransfer.model.Transfer;
 
 @Component
-public class TransferMapping implements RowMapper<Transfer> { // sourceAccountId,destinationAccountId,
+public class TransferMapping implements RowMapper<Transfer> {
 
 	@Override
 	public Transfer mapRow(ResultSet rs, int rowNum) throws SQLException {

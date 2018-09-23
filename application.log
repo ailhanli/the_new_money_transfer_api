@@ -1,2 +1,16 @@
-2018-09-22 00:03:15 ERROR AccountControllerImpl:89 - io.vertx.core.json.DecodeException: Failed to decode: Can not deserialize instance of java.lang.Integer out of START_OBJECT token
- at [Source: {"accountId":null,"name":"Abdullah","balance":250.0,"currency":"EUR"}; line: 1, column: 1]
+2018-09-23 18:50:09 ERROR TransferControllerImpl:47 - io.vertx.core.json.DecodeException: Failed to decode: No suitable constructor found for type [simple type, class com.ailhanli.moneytransfer.model.Transfer]: can not instantiate from JSON object (missing default constructor or creator, or perhaps need to add/enable type information?)
+ at [Source: {
+    "sourceAccountId": "1",
+    "destinationAccountId": "0",
+    "amount": "100",
+    "currencyCode": "XYZ",
+    "comment": "test transfer"
+}; line: 2, column: 5]
+2018-09-23 18:50:09 ERROR TransferControllerImpl:47 - io.vertx.core.json.DecodeException: Failed to decode: No suitable constructor found for type [simple type, class com.ailhanli.moneytransfer.model.Transfer]: can not instantiate from JSON object (missing default constructor or creator, or perhaps need to add/enable type information?)
+ at [Source: {
+    "sourceAccountId": "1",
+    "destinationAccountId": "0",
+    "amount": "100",
+    "currencyCode": "EUR",
+    "comment": "test transfer"
+}; line: 2, column: 5]

@@ -15,3 +15,6 @@ create table transfer(
 	currency char(3),
 	comment varchar(200)
 );
+
+insert into account values(1, 'Omer', 500, 'EUR');
+insert into account values(2, 'Abdullah', 1000, 'EUR');

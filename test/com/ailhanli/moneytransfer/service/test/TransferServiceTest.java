@@ -1,5 +1,6 @@
 package com.ailhanli.moneytransfer.service.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.Currency;
@@ -46,7 +47,7 @@ public class TransferServiceTest {
 		Account sourceAccount= new Account(1,"Abdullah", 100, Currency.getInstance("EUR")  );
 		Account destinationAccount= new Account(2,"Omer", 50, Currency.getInstance("EUR")  );
 				
-		Transfer transfer = new Transfer(sourceAccount.getAccountId(), destinationAccount.getAccountId(), 1000, Currency.getInstance("EUR"), "For the test");
+		Transfer transfer = new Transfer(sourceAccount.getAccountId(), destinationAccount.getAccountId(), 10, Currency.getInstance("EUR"), "For the test");
 		
 		when(accountService.getAccount(transfer.getSourceAccountId())).thenReturn(sourceAccount);
 		when(accountService.getAccount(transfer.getDestinationAccountId())).thenReturn(destinationAccount);
@@ -54,5 +55,10 @@ public class TransferServiceTest {
 
 		// act
 		transferService.transferMoney(transfer);
+		
+		//arrange
+		assertEquals(new Double(90), Double.valueOf(sourceAccount.getBalance()));
+		assertEquals(new Double(60), Double.valueOf(destinationAccount.getBalance()));
+
 	}
 }

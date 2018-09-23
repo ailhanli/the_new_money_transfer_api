@@ -20,11 +20,9 @@ public class TestTransferValidator {
 
 	private final ApplicationProperties applicationProperties;
 	
-
 	public TestTransferValidator() {
 		messages = Mockito.mock(Messages.class);
 		applicationProperties = Mockito.mock(ApplicationProperties.class);
-		
 		
 		transferValidator = new TransferValidator(messages, applicationProperties);
 	}
@@ -46,7 +44,6 @@ public class TestTransferValidator {
 		transferValidator.validateTransferInput(transfer);
 	}
 	
-	
 	@Test(expected= InsufficientBalanceException.class)
 	public void test_validateTransferAmountThrowInsufficientBalanceException() throws Exception {
 		
@@ -55,6 +52,4 @@ public class TestTransferValidator {
 		
 		transferValidator.validateTransferAmount(account, amountToTransfer);
 	}
-	
-	
 }

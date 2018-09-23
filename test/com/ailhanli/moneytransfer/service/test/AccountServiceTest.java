@@ -36,7 +36,7 @@ public class AccountServiceTest {
 
 	@Test
 	public void test_retrieveAllAccounts() throws Exception {
-
+		//arrange
 		List<Account> accounts = new ArrayList<>();
 		Account acc1 = new Account("Yana Karkov", 1500, Currency.getInstance("EUR"));
 		accounts.add(acc1);
@@ -46,8 +46,12 @@ public class AccountServiceTest {
 		accounts.add(acc3);
 
 		when(accountDAO.getAllAccounts()).thenReturn(accounts);
+		
+		//act
+		int size = accountService.getAllAccounts().size();
 
-		assertEquals(3, accountService.getAllAccounts().size());
+		//assert
+		assertEquals(3, size);
 	}
 
 	@Test

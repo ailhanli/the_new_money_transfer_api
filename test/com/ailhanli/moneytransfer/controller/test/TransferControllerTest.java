@@ -15,7 +15,7 @@ import com.jayway.restassured.RestAssured;
 
 public class TransferControllerTest {
 
-	private static final String API_KEY="/api/transfer/";
+	private static final String API_KEY="/api/transfers/";
 	
 	private static final String ACCOUNT_API_KEY="/api/accounts/";
 	
@@ -43,5 +43,41 @@ public class TransferControllerTest {
 		
 		Transfer transfer = new Transfer(sourceAccountId, destinationAccountId,100.0, Currency.getInstance("EUR"),"for transfer service test 1");
 		given().body(transfer).post(API_KEY).then().assertThat().statusCode(200);
+	}
+	
+	@Test
+	public void test_TransferForNonExistingAccount() {	
+		Transfer transfer = new Transfer(87, 1,100.0, Currency.getInstance("EUR"),"for transfer service test 2");
+		given().body(transfer).post(API_KEY).then().assertThat().statusCode(404);
+	}
+	
+	@Test
+	public void test_TransferForInsufficientBalance() {	
+		Account sourceAccount = new Account("Abdullah", 1000, Currency.getInstance("EUR"));
+		Account destinationAccount = new Account("Omer", 500, Currency.getInstance("EUR"));
+		
+		given().body(sourceAccount).post(ACCOUNT_API_KEY).then().assertThat().statusCode(200);
+		given().body(destinationAccount).post(ACCOUNT_API_KEY).then().assertThat().statusCode(200);
+		
+		Integer sourceAccountId = get(ACCOUNT_API_KEY).then().assertThat().statusCode(200).extract().jsonPath().getInt("find {it.name==\"Abdullah\"}.accountId");
+		Integer destinationAccountId = get(ACCOUNT_API_KEY).then().assertThat().statusCode(200).extract().jsonPath().getInt("find {it.name==\"Omer\"}.accountId");
+		
+		Transfer transfer = new Transfer(sourceAccountId, destinationAccountId,9999.0, Currency.getInstance("EUR"),"for transfer service test 1");
+		given().body(transfer).post(API_KEY).then().assertThat().statusCode(404);
+	}
+	
+	@Test
+	public void test_TransferForNegativeTransfer() {	
+		Account sourceAccount = new Account("Abdullah", 1000, Currency.getInstance("EUR"));
+		Account destinationAccount = new Account("Omer", 500, Currency.getInstance("EUR"));
+		
+		given().body(sourceAccount).post(ACCOUNT_API_KEY).then().assertThat().statusCode(200);
+		given().body(destinationAccount).post(ACCOUNT_API_KEY).then().assertThat().statusCode(200);
+		
+		Integer sourceAccountId = get(ACCOUNT_API_KEY).then().assertThat().statusCode(200).extract().jsonPath().getInt("find {it.name==\"Abdullah\"}.accountId");
+		Integer destinationAccountId = get(ACCOUNT_API_KEY).then().assertThat().statusCode(200).extract().jsonPath().getInt("find {it.name==\"Omer\"}.accountId");
+		
+		Transfer transfer = new Transfer(sourceAccountId, destinationAccountId,-100.0, Currency.getInstance("EUR"),"for transfer service test 1");
+		given().body(transfer).post(API_KEY).then().assertThat().statusCode(404);
 	}
 }

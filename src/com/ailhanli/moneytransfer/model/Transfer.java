@@ -10,7 +10,7 @@ public class Transfer {
 
 	private Integer destinationAccountId;
 
-	private double amount;
+	private Double amount;
 
 	private Currency currencyCode;
 
@@ -57,7 +57,7 @@ public class Transfer {
 		this.destinationAccountId = destinationAccountId;
 	}
 
-	public double getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 

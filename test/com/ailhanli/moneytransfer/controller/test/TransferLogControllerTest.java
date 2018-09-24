@@ -28,14 +28,36 @@ public class TransferLogControllerTest {
 	
 
 	@Test
-	public void test_CanGetAllTransfers() {
-		Transfer transfer1 = new Transfer(1, 0, Double.valueOf(100), Currency.getInstance("EUR"), "for http test");
-		Transfer transfer2 = new Transfer(1, 2, 100, Currency.getInstance("EUR"), "for http test2");
+	public void test_canGetAllTransfers() {
+		Transfer transfer1 = new Transfer(1, 0, 100.0, Currency.getInstance("EUR"), "for http test");
 		given().body(transfer1).post(API_URI).then().assertThat().statusCode(200);
+		Transfer transfer2 = new Transfer(1, 0, 100.0, Currency.getInstance("EUR"), "for http test");
 		given().body(transfer2).post(API_URI).then().assertThat().statusCode(200);
 		
 		Integer transferId = get(API_URI).then().assertThat().statusCode(200).extract().jsonPath().getInt("find {it.comment==\"for http test\"}.transferId");
 		
-		get(API_URI+transferId).then().assertThat().statusCode(200).body("sourceAccountId", equalTo(1)).body("destinationAccountId", equalTo(2)).body("amount", equalTo(100));
+		get(API_URI+transferId).then().assertThat().statusCode(200).body("transferId", equalTo(transferId));
+	}
+	
+	@Test
+	public void test_retrieveOneExistingTransfer() {
+		Transfer transfer1 = new Transfer(1, 0, 450, Currency.getInstance("EUR"), "for http test");
+		given().body(transfer1).post(API_URI).then().assertThat().statusCode(200);
+		
+		Integer transferId = get(API_URI).then().assertThat().statusCode(200).extract().jsonPath().getInt("find {it.comment==\"for http test\"}.transferId");
+		
+		get(API_URI+transferId).then().assertThat().statusCode(200);
+	}
+	
+	@Test
+	public void test_retrieveNoneExistingTransfer() {
+		get(API_URI+999).then().assertThat().statusCode(404);
+	}
+	
+	@Test
+	public void test_canCreateNewTransferLog() {
+		Transfer transfer1 = new Transfer(1, 0, 450, Currency.getInstance("EUR"), "for http test");
+		
+		given().body(transfer1).post(API_URI).then().assertThat().statusCode(200);
 	}
 }

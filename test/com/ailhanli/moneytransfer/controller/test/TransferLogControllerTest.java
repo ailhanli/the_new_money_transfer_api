@@ -29,28 +29,35 @@ public class TransferLogControllerTest {
 
 	@Test
 	public void test_canGetAllTransfers() {
+		//firstly create two dummy accounts
 		Transfer transfer1 = new Transfer(1, 0, 100.0, Currency.getInstance("EUR"), "for http test");
 		given().body(transfer1).post(API_URI).then().assertThat().statusCode(200);
 		Transfer transfer2 = new Transfer(1, 0, 100.0, Currency.getInstance("EUR"), "for http test");
 		given().body(transfer2).post(API_URI).then().assertThat().statusCode(200);
 		
+		//and then get transferIf for one of them
 		Integer transferId = get(API_URI).then().assertThat().statusCode(200).extract().jsonPath().getInt("find {it.comment==\"for http test\"}.transferId");
 		
+		//check if it is really exists
 		get(API_URI+transferId).then().assertThat().statusCode(200).body("transferId", equalTo(transferId));
 	}
 	
 	@Test
 	public void test_retrieveOneExistingTransfer() {
+		//create new dummy account first for query
 		Transfer transfer1 = new Transfer(1, 0, 450, Currency.getInstance("EUR"), "for http test");
 		given().body(transfer1).post(API_URI).then().assertThat().statusCode(200);
 		
+		//get new account id 
 		Integer transferId = get(API_URI).then().assertThat().statusCode(200).extract().jsonPath().getInt("find {it.comment==\"for http test\"}.transferId");
 		
+		//query account
 		get(API_URI+transferId).then().assertThat().statusCode(200);
 	}
 	
 	@Test
 	public void test_retrieveNoneExistingTransfer() {
+		//check for non exist account
 		get(API_URI+999).then().assertThat().statusCode(404);
 	}
 	
@@ -58,6 +65,7 @@ public class TransferLogControllerTest {
 	public void test_canCreateNewTransferLog() {
 		Transfer transfer1 = new Transfer(1, 0, 450, Currency.getInstance("EUR"), "for http test");
 		
+		//try create new account
 		given().body(transfer1).post(API_URI).then().assertThat().statusCode(200);
 	}
 }

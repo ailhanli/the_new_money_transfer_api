@@ -1,6 +1,5 @@
 package com.ailhanli.moneytransfer.dao.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Currency;
@@ -29,14 +28,20 @@ public class TransferLogDAOTest {
 	@Test
 	public void test_getAllTransferLogs() {
 		//arrange
-		transferLogDAO.create(new Transfer(1, 1, 100, Currency.getInstance("EUR"), "For test"));
-		transferLogDAO.create(new Transfer(2, 1, 200, Currency.getInstance("EUR"), "For test 2"));
+		Integer transfer1Id = transferLogDAO.create(new Transfer(1, 1, 100, Currency.getInstance("EUR"), "For test"));
+		Integer transfer2Id =transferLogDAO.create(new Transfer(2, 1, 200, Currency.getInstance("EUR"), "For test 2"));
 	
 		//act
 		List<Transfer> transfers= transferLogDAO.findAll();
 		
 		//assert
-		assertEquals("number of the transferlogs is different than expected",2, transfers.size());
+		Transfer anyTransfer = transfers
+				.stream()
+				.filter(t->t.getTransferId()==transfer1Id || t.getTransferId()==transfer2Id)
+				.findAny()
+				.orElse(null);
+		
+		assertNotNull(anyTransfer);
 	}
 	
 	@Test

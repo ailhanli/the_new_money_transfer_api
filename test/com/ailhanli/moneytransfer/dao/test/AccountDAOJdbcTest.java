@@ -27,22 +27,28 @@ public class AccountDAOJdbcTest {
 	private AccountDAO accountDAO;
 	
 	@Test
-	public void test_CanGetAllAccounts() {
+	public void test_canGetAllAccounts() {
 		
 		//arrange
-		accountDAO.insert(new Account( "Abdullah", 100, Currency.getInstance("EUR")));
-		accountDAO.insert(new Account( "Omer", 350, Currency.getInstance("EUR")));
+		Integer account1Id= accountDAO.insert(new Account( "Abdullah", 100, Currency.getInstance("EUR")));
+		Integer account2Id= accountDAO.insert(new Account( "Omer", 350, Currency.getInstance("EUR")));
 		
 		//act
 		List<Account> accounts = accountDAO.getAllAccounts();
 		
 		//assert
-		assertEquals("number of the accounts is different than expected", 2, accounts.size());
+		Account anyAccount = accounts
+				.stream()
+				.filter(account->account.getAccountId()==account1Id || account.getAccountId()==account2Id)
+				.findAny()
+				.orElse(null);
+		
+		assertNotNull(anyAccount);
 	}
 	
 	
 	@Test
-	public void test_RetrieveById() {
+	public void test_retrieveExistingAccount() {
 		
 		//arrange
 		Integer id = accountDAO.insert(new Account( "Johny", 100, Currency.getInstance("EUR")));
@@ -88,6 +94,6 @@ public class AccountDAOJdbcTest {
 		Account foundAccount = accountDAO.findById(accountId);
 		
 		//assert
-		assertNotNull("new account cant created",foundAccount);
+		assertNotNull("new account can't created",foundAccount);
 	}
 }

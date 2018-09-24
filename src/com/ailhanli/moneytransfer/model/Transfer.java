@@ -34,6 +34,10 @@ public class Transfer {
 		this.status = TransferStatus.CREATED;
 	}
 
+	public void setTransferId(Integer transferId) {
+		this.transferId = transferId;
+	}
+	
 	public int getTransferId() {
 		return transferId;
 	}

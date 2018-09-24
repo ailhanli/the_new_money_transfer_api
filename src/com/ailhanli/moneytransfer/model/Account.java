@@ -12,6 +12,9 @@ public class Account {
 
     private Currency currency;
 
+    public Account() {
+    }
+
     public Account(Integer accountId, String name, double balance, Currency currency) {
     	this(name, balance, currency);
     	this.accountId = accountId;
@@ -21,9 +24,6 @@ public class Account {
         this.name = name;
         this.balance = balance;
         this.currency = currency;
-    }
-
-    public Account() {
     }
 
     public Integer getAccountId() {

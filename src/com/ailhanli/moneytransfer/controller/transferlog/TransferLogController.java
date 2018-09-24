@@ -7,4 +7,6 @@ public interface TransferLogController {
 	void getTransfer(RoutingContext routingContext);
 
 	void getAllTransfers(RoutingContext routingContext);	
+	
+	void createNewTransfer(RoutingContext routingContext);
 }

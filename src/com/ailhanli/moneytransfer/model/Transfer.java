@@ -18,6 +18,9 @@ public class Transfer {
 
 	private TransferStatus status;
 
+	public Transfer() {
+	}
+	
 	public Transfer(Integer transferId, Integer sourceAccountId, Integer destinationAccountId, double amount, Currency currencyCode,
 			String comment) {
 		this(sourceAccountId, destinationAccountId, amount, currencyCode, comment);
@@ -34,11 +37,7 @@ public class Transfer {
 		this.status = TransferStatus.CREATED;
 	}
 
-	public void setTransferId(Integer transferId) {
-		this.transferId = transferId;
-	}
-	
-	public int getTransferId() {
+	public Integer getTransferId() {
 		return transferId;
 	}
 

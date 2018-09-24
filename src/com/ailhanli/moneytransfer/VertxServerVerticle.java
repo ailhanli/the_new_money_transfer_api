@@ -59,8 +59,10 @@ public class VertxServerVerticle extends AbstractVerticle {
 		router.post("/api/accounts").handler(accountController::createAccount);
 		router.delete("/api/accounts").handler(accountController::deleteAccount);
 
-		router.get("/api/transfers").handler(transferLogController::getAllTransfers);
-		router.get("/api/transfers/:transferId").handler(transferLogController::getTransfer);
+		router.get("/api/transferLogs").handler(transferLogController::getAllTransfers);
+		router.get("/api/transferLogs/:transferId").handler(transferLogController::getTransfer);
+		router.post("/api/transferLogs").handler(transferLogController::createNewTransfer);
+		
 		router.post("/api/transfers").handler(transferController::newTransfer);
 
         return router;

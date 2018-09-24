@@ -37,9 +37,8 @@ public class TransferLogServiceImpl implements TransferLogService {
 	public Transfer getTransfer(Integer transferId)
 			throws TransferNotFoundException, GeneralSystemException {
 
-		Integer transferIdAsInt = Integer.valueOf(transferId);
 		try {
-			return logDAO.findById(transferIdAsInt);
+			return logDAO.findById(transferId);
 		} catch (RecordNotFoundException e) {
 			log.warn(e);
 			throw new TransferNotFoundException(e.getRecordId());
@@ -51,12 +50,6 @@ public class TransferLogServiceImpl implements TransferLogService {
 
 	@Override
 	public Integer newTransferLog(Transfer transfer) throws GeneralSystemException {
-		try {
-			logDAO.create(transfer);
-			return transfer.getTransferId();
-		} catch (Exception e) {
-			log.error(e);
-			throw new GeneralSystemException();
-		}
+		return logDAO.create(transfer);
 	}
 }

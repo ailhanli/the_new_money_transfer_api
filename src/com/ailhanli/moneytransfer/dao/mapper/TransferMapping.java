@@ -14,7 +14,8 @@ public class TransferMapping implements RowMapper<Transfer> {
 
 	@Override
 	public Transfer mapRow(ResultSet rs, int rowNum) throws SQLException {
-		return new Transfer(rs.getInt("source_account_Id"), rs.getInt("destination_account_Id"), rs.getDouble("amount"),
+		System.out.println(rs.getInt("transfer_id"));
+		return new Transfer(rs.getInt("transfer_id"), rs.getInt("source_account_Id"), rs.getInt("destination_account_Id"), rs.getDouble("amount"),
 				Currency.getInstance(rs.getString("currency")), rs.getString("comment"));
 	}
 }

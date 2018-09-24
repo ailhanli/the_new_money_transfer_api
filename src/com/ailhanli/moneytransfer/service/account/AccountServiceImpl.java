@@ -30,12 +30,11 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Account getAccount(Integer accountId) throws AccountNotFoundException, GeneralSystemException {
 
-		Integer accountIdAsInteger = Integer.valueOf(accountId);
 		try {
-			return accountDAO.findById(accountIdAsInteger);
+			return accountDAO.findById(accountId);
 		} catch (RecordNotFoundException e) {
 			log.warn(e);
-			throw new AccountNotFoundException(accountIdAsInteger);
+			throw new AccountNotFoundException(accountId);
 		} catch (Exception e) {
 			log.error(e);
 			throw new GeneralSystemException();

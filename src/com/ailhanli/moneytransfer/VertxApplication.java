@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ImportResource;
 import io.vertx.core.Vertx;
 
 /*
- * This is a entry point of application
+ * This is an entry point of application
  * */
 @SpringBootApplication
 @ImportResource({"classpath*:application-context-test.xml"})

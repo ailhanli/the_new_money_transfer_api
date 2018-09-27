@@ -60,7 +60,7 @@ public class AccountDAOJdbcTest {
 		}
 	}
 
-	// @Test(expected=RecordNotFoundException.class)
+	@Test(expected=RecordNotFoundException.class)
 	public void test_findingNonExistAccount() throws RecordNotFoundException {
 		accountDAO.findById(9999);
 	}

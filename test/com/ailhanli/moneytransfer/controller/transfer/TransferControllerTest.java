@@ -1,4 +1,4 @@
-package com.ailhanli.moneytransfer.controller.test;
+package com.ailhanli.moneytransfer.controller.transfer;
 
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.given;

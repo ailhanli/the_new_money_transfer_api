@@ -1,4 +1,4 @@
-package com.ailhanli.moneytransfer.service.test;
+package com.ailhanli.moneytransfer.service.transferlog;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ailhanli.moneytransfer.dao.transferlog.TransferLogDAO;
 import com.ailhanli.moneytransfer.exception.GeneralSystemException;
 import com.ailhanli.moneytransfer.model.Transfer;
-import com.ailhanli.moneytransfer.service.transferlog.TransferLogService;
-import com.ailhanli.moneytransfer.service.transferlog.TransferLogServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/application-context-test.xml")
@@ -37,7 +35,7 @@ public class TransferLogServiceTest {
 
 	@Test
 	public void test_retrieveAllTransferLogs() throws GeneralSystemException {
-		//arrange
+		// arrange
 		List<Transfer> transferLogs = new ArrayList<>();
 		Transfer tr1 = new Transfer(1, 2, 650, Currency.getInstance("EUR"), "Rent");
 		transferLogs.add(tr1);
@@ -48,57 +46,55 @@ public class TransferLogServiceTest {
 
 		when(transferLogDAO.findAll()).thenReturn(transferLogs);
 
-		//act
+		// act
 		List<Transfer> foundAllTransfer = transferLogService.getAllTransfer();
-		
-		//assert
+
+		// assert
 		assertEquals(3, foundAllTransfer.size());
 	}
 
 	@Test
-	public void test_retrieveExistingTransferLog()
-			throws Exception {
-		//arrange
-		Integer transferId=1;
+	public void test_retrieveExistingTransferLog() throws Exception {
+		// arrange
+		Integer transferId = 1;
 		Transfer transfer = new Transfer(transferId, 1, 2, 50, Currency.getInstance("EUR"), "Rent");
-		
+
 		when(transferLogDAO.findById(transferId)).thenReturn(transfer);
 
-		//act
+		// act
 		Transfer foundTransfer = transferLogService.getTransfer(transferId);
 
-		//assert
+		// assert
 		assertEquals(transfer.getTransferId(), foundTransfer.getTransferId());
 	}
-	
+
 	@Test
-	public void test_retrieveNonExistingTransferLog()
-			throws Exception {
-		//arrange
-		Integer transferId=1;
+	public void test_retrieveNonExistingTransferLog() throws Exception {
+		// arrange
+		Integer transferId = 1;
 		Transfer transfer = new Transfer(transferId, 1, 2, 50, Currency.getInstance("EUR"), "Rent");
-		
+
 		when(transferLogDAO.findById(transferId)).thenReturn(transfer);
 
-		//act
+		// act
 		Transfer foundTransfer = transferLogService.getTransfer(Integer.MAX_VALUE);
 
-		//assert
+		// assert
 		assertNull(foundTransfer);
 	}
 
 	@Test
 	public void test_saveTransaferLog() throws Exception {
-		//arrange
+		// arrange
 		Integer transferId = 7;
 		Transfer transfer = new Transfer(transferId, 1, 2, 100, Currency.getInstance("EUR"), "For Test");
 
 		when(transferLogDAO.create(transfer)).thenReturn(transferId);
-		
-		//act
+
+		// act
 		Integer trnasferedId = transferLogService.newTransferLog(transfer);
 
-		//assert
+		// assert
 		assertEquals(transferId, trnasferedId);
 	}
 

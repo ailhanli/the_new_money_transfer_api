@@ -1,4 +1,4 @@
-package com.ailhanli.moneytransfer.controller.test;
+package com.ailhanli.moneytransfer.controller.account;
 
 import static com.jayway.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;

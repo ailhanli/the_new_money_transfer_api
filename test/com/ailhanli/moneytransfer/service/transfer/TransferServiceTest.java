@@ -1,4 +1,4 @@
-package com.ailhanli.moneytransfer.service.test;
+package com.ailhanli.moneytransfer.service.transfer;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.model.Transfer;
 import com.ailhanli.moneytransfer.service.account.AccountService;
-import com.ailhanli.moneytransfer.service.transfer.TransferService;
-import com.ailhanli.moneytransfer.service.transfer.TransferServiceImpl;
 import com.ailhanli.moneytransfer.service.transferlog.TransferLogService;
 import com.ailhanli.moneytransfer.validator.TransferValidator;
 

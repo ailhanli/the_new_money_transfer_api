@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 
 import com.ailhanli.moneytransfer.exception.InputInvalidException;
 import com.ailhanli.moneytransfer.exception.TransferNotFoundException;
-import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.model.Error;
+import com.ailhanli.moneytransfer.model.SuccessMessage;
 import com.ailhanli.moneytransfer.model.Transfer;
 import com.ailhanli.moneytransfer.service.transferlog.TransferLogService;
 
@@ -65,12 +65,8 @@ public class TransferLogControllerImpl implements TransferLogController {
 		final Transfer transferToCreate = Json.decodeValue(routingContext.getBodyAsString(), Transfer.class);
 		try {
 			
-			Integer transferId  = transferLogService.newTransferLog(transferToCreate);
-			Transfer createdTransfer = transferLogService.getTransfer(transferId);
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").end(Json.encodePrettily(createdTransfer));
-		} catch (TransferNotFoundException | InputInvalidException e) {
-			log.warn(e);
-			routingContext.response().setStatusCode(404).end(Json.encodePrettily(Error.of(e)));
+			transferLogService.newTransferLog(transferToCreate);
+			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").end(Json.encodePrettily(new SuccessMessage(SuccessMessage.MessageType.CREATE)));
 		} catch (Exception e) {
 			log.error(e);
 			routingContext.response().setStatusCode(400).end(Json.encodePrettily(Error.of(e)));

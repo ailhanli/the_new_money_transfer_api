@@ -71,10 +71,10 @@ public class AccountServiceTest {
 		Account account = new Account(1, "Yana Karkov", 1500, Currency.getInstance("EUR"));
 
 		// act
-		when(accountDAO.update(account)).thenReturn(Boolean.TRUE);
+		accountDAO.update(account);
 
 		// assert
-		assertTrue(accountService.updateAccount(account));
+		accountService.updateAccount(account);
 	}
 	
 	@Test

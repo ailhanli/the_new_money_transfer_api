@@ -55,13 +55,8 @@ public class AccountServiceImpl implements AccountService {
 		}
 	}
 
-	public boolean updateAccount(Account account) throws GeneralSystemException {
-		boolean result = accountDAO.update(account);
-		if (!result) {
-			throw new GeneralSystemException();
-		}
-		
-		return result;
+	public void updateAccount(Account account) throws GeneralSystemException {
+		accountDAO.update(account);
 	}
 
 	@Override
@@ -71,10 +66,10 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public boolean deleteAccount(Integer accountId) throws AccountNotFoundException {
+	public void deleteAccount(Integer accountId) throws AccountNotFoundException {
 
 		try {
-			return accountDAO.delete(accountId);
+			 accountDAO.delete(accountId);
 		} catch (RecordNotFoundException e) {
 			throw new AccountNotFoundException(accountId);
 		}

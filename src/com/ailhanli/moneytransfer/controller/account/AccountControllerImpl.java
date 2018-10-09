@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ailhanli.moneytransfer.exception.AccountNotFoundException;
 import com.ailhanli.moneytransfer.exception.InputInvalidException;
 import com.ailhanli.moneytransfer.model.Account;
 import com.ailhanli.moneytransfer.model.Error;
+import com.ailhanli.moneytransfer.model.SuccessMessage;
 import com.ailhanli.moneytransfer.service.account.AccountService;
 
 import io.vertx.core.json.Json;
@@ -60,16 +60,14 @@ public class AccountControllerImpl implements AccountController {
 	}
 
 	@Override
-	@Transactional
 	public void createAccount(RoutingContext routingContext) {
 		try {
-			final Account account = Json.decodeValue(routingContext.getBodyAsString(), Account.class);
+			final Account account = Json.decodeValue(routingContext.getBodyAsString(), Account.class);	
 			log.debug(account);
 
-			Integer accountId= accountService.createNewAccount(account);
-			Account accountCreated= accountService.getAccount(accountId);
+			accountService.createNewAccount(account);
 			routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-					.end(Json.encodePrettily(accountCreated));
+					.end(Json.encodePrettily(new SuccessMessage(SuccessMessage.MessageType.CREATE)));
 		} catch (Exception e) {
 			log.error(e);
 			routingContext.response().setStatusCode(400).end(Json.encodePrettily(Error.of(e)));
@@ -82,9 +80,9 @@ public class AccountControllerImpl implements AccountController {
 			final Integer accountId = Json.decodeValue(routingContext.getBodyAsString(), Integer.class);
 			log.debug(accountId);
 
-			boolean isDeleted= accountService.deleteAccount(accountId);
+			accountService.deleteAccount(accountId);
 			routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-					.end(Json.encodePrettily(isDeleted));
+					.end(Json.encodePrettily(new SuccessMessage(SuccessMessage.MessageType.DELETE)));
 		} catch (Exception e) {
 			log.error(e);
 			routingContext.response().setStatusCode(400).end(Json.encodePrettily(Error.of(e)));

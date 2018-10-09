@@ -21,7 +21,6 @@ import com.ailhanli.moneytransfer.model.Transfer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/application-context-test.xml")
-@Transactional
 public class TransferLogServiceTest {
 
 	private TransferLogDAO transferLogDAO;

@@ -20,7 +20,6 @@ import com.ailhanli.moneytransfer.model.Account;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/application-context-test.xml")
-@Transactional
 public class AccountServiceTest {
 
 	private AccountService accountService;
